@@ -9,7 +9,7 @@ WORKDIR $HOME
 ######### Customize Container Here ###########
 
 
-RUN apt-get update && apt-get upgrade -y 
+RUN apt-get update
 
 RUN mkdir -p /opt/orcaSlicer \
     && cd /opt/orcaSlicer \
