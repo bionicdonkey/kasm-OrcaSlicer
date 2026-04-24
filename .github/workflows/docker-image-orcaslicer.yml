@@ -18,8 +18,15 @@ jobs:
     steps:
       - name: Get latest OrcaSlicer release
         id: get-version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          VERSION=$(curl -s https://api.github.com/repos/SoftFever/OrcaSlicer/releases/latest | jq -r '.tag_name')
+          VERSION=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
+            https://api.github.com/repos/SoftFever/OrcaSlicer/releases/latest | jq -r '.tag_name')
+          if [ "$VERSION" = "null" ] || [ -z "$VERSION" ]; then
+            echo "::error::Failed to fetch OrcaSlicer version from GitHub API"
+            exit 1
+          fi
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Latest OrcaSlicer version: $VERSION"
 
@@ -68,7 +75,7 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/kasm-orcaslicer:${{ needs.check-version.outputs.orca_version }}
 
       - name: Create GitHub Release
-        if: needs.check-version.outputs.needs_build == 'true'
+        if: needs.check-version.outputs.needs_build == 'true' && github.event_name == 'schedule'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION: ${{ needs.check-version.outputs.orca_version }}
