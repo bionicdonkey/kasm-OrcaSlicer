@@ -21,8 +21,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          VERSION=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
-            https://api.github.com/repos/SoftFever/OrcaSlicer/releases/latest | jq -r '.tag_name')
+          VERSION=$(gh api repos/SoftFever/OrcaSlicer/releases/latest --jq '.tag_name')
           if [ "$VERSION" = "null" ] || [ -z "$VERSION" ]; then
             echo "::error::Failed to fetch OrcaSlicer version from GitHub API"
             exit 1
