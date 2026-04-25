@@ -1,4 +1,4 @@
-/usr/bin/desktop_ready && /opt/orcaSlicer/AppRun &
+/usr/bin/desktop_ready && /opt/orcaSlicer/AppRun
 
 # #!/usr/bin/env bash
 # set -ex
