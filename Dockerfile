@@ -22,6 +22,7 @@ RUN mkdir -p /opt/orcaSlicer \
         gstreamer1.0-plugins-bad \
         libtiff6 \
         libmspack0t64 \
+        libgl1-mesa-dri \
         unzip \
     && wget "$APPIMAGE_URL" \
     && chmod +x *.AppImage \
@@ -34,6 +35,12 @@ RUN mkdir -p /opt/orcaSlicer \
 # Set this so that Orca Slicer doesn't complain about
 # the CA cert path on every startup
 ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+
+# Force Mesa software rendering — no GPU available in container.
+# Without this, Mesa tries ZINK (Vulkan) then drisw, both fail,
+# and OrcaSlicer segfaults when the Device tab triggers OpenGL.
+ENV LIBGL_ALWAYS_SOFTWARE=1
+ENV GALLIUM_DRIVER=llvmpipe
 
 COPY custom_startup.sh $STARTUPDIR/custom_startup.sh
 RUN chmod +x $STARTUPDIR/custom_startup.sh
