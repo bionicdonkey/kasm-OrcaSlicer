@@ -20,6 +20,7 @@ RUN mkdir -p /opt/orcaSlicer \
         gstreamer1.0-libav \
         gstreamer1.0-plugins-bad \
         libtiff6 \
+        libmspack0t64 \
         unzip \
         jq \
     && APPIMAGE_URL=$(curl -fsSL https://api.github.com/repos/SoftFever/OrcaSlicer/releases/latest | \
