@@ -1,4 +1,4 @@
-FROM kasmweb/core-ubuntu-jammy:1.13.0-rolling
+FROM kasmweb/core-ubuntu-noble:1.16.0
 USER root
 
 ENV HOME /home/kasm-default-profile
@@ -16,12 +16,11 @@ RUN mkdir -p /opt/orcaSlicer \
     && add-apt-repository universe \
     && apt install -y \
         libfuse2 \
-        libwebkit2gtk-4.0-dev \
+        libwebkit2gtk-4.1-0 \
         gstreamer1.0-libav \
         gstreamer1.0-plugins-bad \
-        libtiff5 \
+        libtiff6 \
         unzip \
-    && ln -s /usr/lib/x86_64-linux-gnu/libtiff.so.5 /usr/lib/x86_64-linux-gnu/libtiff.so.6 \
     && wget $(curl -L -s https://api.github.com/repos/SoftFever/OrcaSlicer/releases/latest | grep -o -E "https://(.*)Linux(.*).AppImage") \
     && chmod +x *.AppImage \
     && ./*.AppImage --appimage-extract \
