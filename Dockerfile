@@ -19,6 +19,7 @@ RUN mkdir -p /opt/orcaSlicer \
         libwebkit2gtk-4.0-dev \
         gstreamer1.0-libav \
         gstreamer1.0-plugins-bad \
+        libtiff6 \
         unzip \
     && wget $(curl -L -s https://api.github.com/repos/SoftFever/OrcaSlicer/releases/latest | grep -o -E "https://(.*)Linux(.*).AppImage") \
     && chmod +x *.AppImage \
