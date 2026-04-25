@@ -11,6 +11,7 @@ WORKDIR $HOME
 
 RUN apt-get update
 
+ARG APPIMAGE_URL
 RUN mkdir -p /opt/orcaSlicer \
     && cd /opt/orcaSlicer \
     && add-apt-repository universe \
@@ -22,9 +23,6 @@ RUN mkdir -p /opt/orcaSlicer \
         libtiff6 \
         libmspack0t64 \
         unzip \
-        jq \
-    && APPIMAGE_URL=$(curl -fsSL https://api.github.com/repos/SoftFever/OrcaSlicer/releases/latest | \
-        jq -r '.assets[] | select(.name | test("Ubuntu2404.*\\.AppImage$")) | .browser_download_url') \
     && wget "$APPIMAGE_URL" \
     && chmod +x *.AppImage \
     && ./*.AppImage --appimage-extract \
