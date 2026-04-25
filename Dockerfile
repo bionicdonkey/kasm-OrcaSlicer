@@ -21,7 +21,10 @@ RUN mkdir -p /opt/orcaSlicer \
         gstreamer1.0-plugins-bad \
         libtiff6 \
         unzip \
-    && wget $(curl -L -s https://api.github.com/repos/SoftFever/OrcaSlicer/releases/latest | grep -o -E "https://(.*)Linux(.*).AppImage") \
+        jq \
+    && APPIMAGE_URL=$(curl -fsSL https://api.github.com/repos/SoftFever/OrcaSlicer/releases/latest | \
+        jq -r '.assets[] | select(.name | test("Ubuntu2404.*\\.AppImage$")) | .browser_download_url') \
+    && wget "$APPIMAGE_URL" \
     && chmod +x *.AppImage \
     && ./*.AppImage --appimage-extract \
     && rm *.AppImage \
