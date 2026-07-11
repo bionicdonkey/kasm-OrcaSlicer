@@ -62,6 +62,11 @@ jobs:
           URL=$(gh api repos/SoftFever/OrcaSlicer/releases/latest \
             --jq '.assets[] | select(.name | test("Ubuntu2404.*(x86_64|amd64).*\\.AppImage$")) | .browser_download_url' | head -n1)
           if [ -z "$URL" ]; then
+            # Prefer AppImage without an explicit aarch64 suffix (likely x86_64)
+            URL=$(gh api repos/SoftFever/OrcaSlicer/releases/latest \
+              --jq '.assets[] | select((.name | test("Ubuntu2404.*\\.AppImage$")) and (.name | test("aarch64") | not)) | .browser_download_url' | head -n1)
+          fi
+          if [ -z "$URL" ]; then
             URL=$(gh api repos/SoftFever/OrcaSlicer/releases/latest \
               --jq '.assets[] | select(.name | test("Ubuntu2404.*\\.AppImage$")) | .browser_download_url' | head -n1)
           fi
