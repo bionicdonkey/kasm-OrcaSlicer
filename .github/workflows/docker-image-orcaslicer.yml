@@ -100,7 +100,7 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/kasm-orcaslicer:${{ needs.check-version.outputs.orca_version }}
 
       - name: Create GitHub Release
-        if: needs.check-version.outputs.needs_build == 'true' && github.event_name == 'schedule'
+        if: needs.check-version.outputs.needs_build == 'true' && (github.event_name == 'schedule' || github.ref == 'refs/heads/main')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION: ${{ needs.check-version.outputs.orca_version }}
