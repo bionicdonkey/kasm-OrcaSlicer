@@ -9,7 +9,7 @@ on:
 
 jobs:
   check-version:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     outputs:
@@ -46,7 +46,7 @@ jobs:
   build:
     needs: check-version
     if: needs.check-version.outputs.needs_build == 'true' || github.event_name != 'schedule'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: write
       packages: write
@@ -59,7 +59,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           URL=$(gh api repos/SoftFever/OrcaSlicer/releases/latest \
-            --jq '.assets[] | select(.name | test("Ubuntu2404.*\\.AppImage$")) | .browser_download_url')
+            --jq '.assets[] | select(.name | test("Ubuntu2404.*\\.AppImage$")) | .browser_download_url' | head -n1)
           if [ -z "$URL" ]; then
             echo "::error::Failed to find Ubuntu2404 AppImage URL"
             exit 1
