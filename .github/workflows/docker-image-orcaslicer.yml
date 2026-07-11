@@ -9,7 +9,7 @@ on:
 
 jobs:
   check-version:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     outputs:
@@ -46,7 +46,7 @@ jobs:
   build:
     needs: check-version
     if: needs.check-version.outputs.needs_build == 'true' || github.event_name != 'schedule'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: write
       packages: write
@@ -58,8 +58,18 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # Prefer amd64/x86_64 AppImage; fall back to any Ubuntu2404 AppImage
           URL=$(gh api repos/SoftFever/OrcaSlicer/releases/latest \
-            --jq '.assets[] | select(.name | test("Ubuntu2404.*\\.AppImage$")) | .browser_download_url')
+            --jq '.assets[] | select(.name | test("Ubuntu2404.*(x86_64|amd64).*\\.AppImage$")) | .browser_download_url' | head -n1)
+          if [ -z "$URL" ]; then
+            # Prefer AppImage without an explicit aarch64 suffix (likely x86_64)
+            URL=$(gh api repos/SoftFever/OrcaSlicer/releases/latest \
+              --jq '.assets[] | select((.name | test("Ubuntu2404.*\\.AppImage$")) and (.name | test("aarch64") | not)) | .browser_download_url' | head -n1)
+          fi
+          if [ -z "$URL" ]; then
+            URL=$(gh api repos/SoftFever/OrcaSlicer/releases/latest \
+              --jq '.assets[] | select(.name | test("Ubuntu2404.*\\.AppImage$")) | .browser_download_url' | head -n1)
+          fi
           if [ -z "$URL" ]; then
             echo "::error::Failed to find Ubuntu2404 AppImage URL"
             exit 1
