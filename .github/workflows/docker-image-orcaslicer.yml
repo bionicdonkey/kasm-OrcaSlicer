@@ -59,7 +59,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           URL=$(gh api repos/SoftFever/OrcaSlicer/releases/latest \
-            --jq '.assets[] | select(.name | test("Ubuntu2404.*\\.AppImage$")) | .browser_download_url' | head -n1)
+            --jq '.assets[] | select(.name | test("Ubuntu2404.*(x86_64|amd64).*\\.AppImage$")) | .browser_download_url' | head -n1)
           if [ -z "$URL" ]; then
             echo "::error::Failed to find Ubuntu2404 AppImage URL"
             exit 1
