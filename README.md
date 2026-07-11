@@ -81,5 +81,3 @@ This script may be customized to support alternate startup behavior or startup a
 4. Submit a pull request.
 
 ---
-
-If you want, I can also add a short `README` section showing how to configure the Kasm registry to consume this image.
