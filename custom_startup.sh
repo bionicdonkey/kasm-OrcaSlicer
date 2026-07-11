@@ -35,10 +35,10 @@
 #         URL=$OPT_URL
 #     elif [ -n "$1" ] ; then
 #         URL=$1
-#     fi 
-    
-#     # Since we are execing into a container that already has the browser running from startup, 
-#     #  when we don't have a URL to open we want to do nothing. Otherwise a second browser instance would open. 
+#     fi
+
+#     # Since we are execing into a container that already has the browser running from startup,
+#     #  when we don't have a URL to open we want to do nothing. Otherwise a second browser instance would open.
 #     if [ -n "$URL" ] ; then
 #         /usr/bin/filter_ready
 #         /usr/bin/desktop_ready
@@ -74,10 +74,10 @@
 #             sleep 1
 #         done
 #         set -x
-    
+
 #     fi
 
-# } 
+# }
 
 # if [ -n "$GO" ] || [ -n "$ASSIGN" ] ; then
 #     kasm_exec
